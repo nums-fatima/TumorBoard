@@ -145,6 +145,15 @@ export default function ChatBox({ messages, thinking, connected, onSend }: Props
   return (
     <div className="flex h-full flex-col bg-[#f0f4f8]">
 
+      {/* Hidden file input — always mounted so ref is valid in both empty and chat states */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".pdf,.txt"
+        className="hidden"
+        onChange={handleFileSelect}
+      />
+
       {/* Floating "Ask TumorBoard" on text selection */}
       {sel && (
         <button
@@ -192,15 +201,6 @@ export default function ChatBox({ messages, thinking, connected, onSend }: Props
                 ))}
               </div>
             </div>
-
-            {/* Hidden file input */}
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept=".pdf,.txt"
-              className="hidden"
-              onChange={handleFileSelect}
-            />
 
             {/* Attached file chip */}
             {attached && (

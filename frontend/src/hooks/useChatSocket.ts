@@ -156,10 +156,12 @@ export function useChatSocket() {
   const startNewChat = useCallback(() => {
     const chat = newChat()
     setState((prev) => ({ chats: [chat, ...prev.chats], activeChatId: chat.id }))
+    setAgents(initialAgents())
   }, [])
 
   const selectChat = useCallback((id: string) => {
     setState((prev) => ({ ...prev, activeChatId: id }))
+    setAgents(initialAgents())
   }, [])
 
   const deleteChat = useCallback((id: string) => {
