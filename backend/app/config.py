@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     openrouter_api_key: str
     openrouter_model: str = "qwen/qwen-2.5-72b-instruct"
     cors_origins: str = "http://localhost:5173"
+    tavily_api_key: str = ""
 
     @property
     def cors_origin_list(self) -> list[str]:

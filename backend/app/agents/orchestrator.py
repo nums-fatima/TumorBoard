@@ -7,6 +7,7 @@ from app.agents.biomarker import BiomarkerAgent
 from app.agents.clinical_trial import ClinicalTrialAgent
 from app.agents.guideline import GuidelineAgent
 from app.agents.literature import LiteratureAgent
+from app.agents.web_search import WebSearchAgent
 from app.llm.base import LLMProvider
 from app.models.schemas import AgentResult, ExtractedIntent
 from app.observability.trace import JsonSendable, emit
@@ -67,6 +68,7 @@ async def run_agents(llm: LLMProvider, intent: ExtractedIntent, ws: JsonSendable
         ClinicalTrialAgent(),
         BiomarkerAgent(),
         GuidelineAgent(llm, on_substep=guideline_substep),
+        WebSearchAgent(),
     ]
 
     async def run_one(agent) -> AgentResult:

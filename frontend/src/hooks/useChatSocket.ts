@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { AgentName, AgentState, Chat, ChatMessage, Report, ServerEvent } from '../types'
 
-const AGENT_ORDER: AgentName[] = ['Orchestrator', 'Literature', 'ClinicalTrial', 'Guideline', 'Biomarker', 'Synthesizer']
+const AGENT_ORDER: AgentName[] = ['Orchestrator', 'Literature', 'ClinicalTrial', 'Guideline', 'Biomarker', 'Web Sources', 'Synthesizer']
 const STORAGE_KEY = 'tumorboard.chats.v1'
 
 function initialAgents(): Record<AgentName, AgentState> {
@@ -49,7 +49,7 @@ export function useChatSocket() {
   const [{ chats, activeChatId }, setState] = useState(loadChats)
   const [connected, setConnected] = useState(false)
   const [agents, setAgents] = useState<Record<AgentName, AgentState>>(initialAgents)
-  const [thinking, setThinking] = useState(false)
+  const [thinkingChatId, setThinkingChatId] = useState<string | null>(null)
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ chats, activeChatId }))
@@ -124,7 +124,7 @@ export function useChatSocket() {
           })
           pendingReportRef.current = null
           pendingChatIdRef.current = null
-          setThinking(false)
+          setThinkingChatId(null)
           break
         }
       }
@@ -147,7 +147,7 @@ export function useChatSocket() {
             : c,
         ),
       }))
-      setThinking(true)
+      setThinkingChatId(activeChatId)
       ws.send(JSON.stringify({ message: text, chat_id: activeChatId, upload_id: uploadId ?? undefined }))
     },
     [activeChatId],
@@ -161,7 +161,8 @@ export function useChatSocket() {
 
   const selectChat = useCallback((id: string) => {
     setState((prev) => ({ ...prev, activeChatId: id }))
-    setAgents(initialAgents())
+    // only reset agents if no response is currently in flight
+    if (!pendingChatIdRef.current) setAgents(initialAgents())
   }, [])
 
   const deleteChat = useCallback((id: string) => {
@@ -176,7 +177,14 @@ export function useChatSocket() {
     })
   }, [])
 
+  const deleteAllChats = useCallback(() => {
+    const fresh = newChat()
+    setState({ chats: [fresh], activeChatId: fresh.id })
+    setAgents(initialAgents())
+  }, [])
+
   const activeChat = chats.find((c) => c.id === activeChatId) ?? chats[0]
+  const thinking = thinkingChatId === activeChatId
 
   return {
     connected,
@@ -189,5 +197,6 @@ export function useChatSocket() {
     startNewChat,
     selectChat,
     deleteChat,
+    deleteAllChats,
   }
 }

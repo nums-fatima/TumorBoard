@@ -160,8 +160,11 @@ async def chat_ws(raw_ws: WebSocket) -> None:
                     reply_chunks.append(chunk)
                     await ws.send_json({"type": "token", "content": chunk})
 
-                report = await build_report(llm, question, results, patient_context=doc_context)
-                await ws.send_json({"type": "report", "report": report})
+                try:
+                    report = await build_report(llm, question, results, patient_context=doc_context)
+                    await ws.send_json({"type": "report", "report": report})
+                except Exception as exc:
+                    console.print(f"[yellow]build_report failed: {exc}[/yellow]")
                 await emit(ws, "Synthesizer", "done", "report ready")
             else:
                 await emit(ws, "Orchestrator", "done", "follow-up — reusing prior findings")

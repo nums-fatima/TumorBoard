@@ -7,9 +7,10 @@ const AGENT_CONFIG: Record<AgentName, { label: string; short: string; dot: strin
   Guideline:    { label: 'Guideline',    short: 'PDQ', dot: 'bg-amber-500',   badge: 'bg-amber-100 text-amber-800',  text: 'text-amber-800'   },
   Biomarker:    { label: 'Biomarker',    short: 'BIO', dot: 'bg-violet-500',  badge: 'bg-violet-100 text-violet-800', text: 'text-violet-800'  },
   Synthesizer:  { label: 'Synthesizer',  short: 'SYN', dot: 'bg-rose-500',   badge: 'bg-rose-100 text-rose-800',    text: 'text-rose-800'    },
+  'Web Sources': { label: 'Web Sources',  short: 'WEB', dot: 'bg-teal-500',   badge: 'bg-teal-100 text-teal-800',    text: 'text-teal-800'    },
 }
 
-const AGENT_ORDER: AgentName[] = ['Orchestrator', 'Literature', 'ClinicalTrial', 'Guideline', 'Biomarker', 'Synthesizer']
+const AGENT_ORDER: AgentName[] = ['Orchestrator', 'Literature', 'ClinicalTrial', 'Guideline', 'Biomarker', 'Web Sources', 'Synthesizer']
 
 interface TimelineEntry extends AgentLogEntry {
   agent: AgentName

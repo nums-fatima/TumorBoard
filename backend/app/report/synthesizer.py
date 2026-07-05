@@ -7,8 +7,9 @@ from app.llm.base import LLMProvider
 from app.models.schemas import AgentResult
 
 REPLY_SYSTEM_PROMPT = """You are TumorBoard, a multi-agent oncology research assistant.
-Four specialist agents have gathered real data for you: Literature (PubMed), Clinical Trials \
-(ClinicalTrials.gov), Biomarker (CIViC), and Guideline (NCI PDQ). Using ONLY those findings, \
+Five specialist agents have gathered real data for you: Literature (PubMed), Clinical Trials \
+(ClinicalTrials.gov), Biomarker (CIViC), Guideline (NCI PDQ), and Web Sources (trusted medical websites). \
+Using ONLY those findings, \
 write a COMPREHENSIVE, STRUCTURED research response in markdown.
 
 MANDATORY FORMAT:

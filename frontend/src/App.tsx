@@ -5,7 +5,7 @@ import AgentStatusPanel from './components/AgentStatusPanel'
 import ChatHistorySidebar from './components/ChatHistorySidebar'
 
 export default function App() {
-  const { connected, messages, chats, activeChatId, agents, thinking, sendMessage, startNewChat, selectChat, deleteChat } =
+  const { connected, messages, chats, activeChatId, agents, thinking, sendMessage, startNewChat, selectChat, deleteChat, deleteAllChats } =
     useChatSocket()
   const [showHistory, setShowHistory] = useState(false)
   const [showAgentPanel, setShowAgentPanel] = useState(false)
@@ -66,6 +66,18 @@ export default function App() {
       <main className="relative min-h-0 flex-1">
         <ChatBox messages={messages} thinking={thinking} connected={connected} onSend={sendMessage} />
 
+        {/* Floating new chat button — bottom right */}
+        <button
+          onClick={startNewChat}
+          title="New chat"
+          className="absolute bottom-6 right-6 z-10 flex items-center gap-2 rounded-full bg-blue-600 px-4 py-3 text-sm font-semibold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-xl"
+        >
+          <svg className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M10 4a.75.75 0 01.75.75v4.5h4.5a.75.75 0 010 1.5h-4.5v4.5a.75.75 0 01-1.5 0v-4.5h-4.5a.75.75 0 010-1.5h4.5v-4.5A.75.75 0 0110 4z" />
+          </svg>
+          New chat
+        </button>
+
         {/* Backdrop */}
         {(showHistory || showAgentPanel) && (
           <div className="absolute inset-0 z-20 bg-black/10 backdrop-blur-[1px]" onClick={closeAll} />
@@ -98,6 +110,7 @@ export default function App() {
                 onSelect={(id) => { selectChat(id); setShowHistory(false) }}
                 onNewChat={() => { startNewChat(); setShowHistory(false) }}
                 onDelete={deleteChat}
+                onDeleteAll={() => { deleteAllChats(); setShowHistory(false) }}
               />
             </div>
           </div>

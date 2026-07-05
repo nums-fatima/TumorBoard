@@ -1,4 +1,4 @@
-export type AgentName = 'Orchestrator' | 'Literature' | 'ClinicalTrial' | 'Guideline' | 'Biomarker' | 'Synthesizer'
+export type AgentName = 'Orchestrator' | 'Literature' | 'ClinicalTrial' | 'Guideline' | 'Biomarker' | 'Synthesizer' | 'Web Sources'
 
 export type AgentStatus = 'idle' | 'ready' | 'running' | 'done' | 'error'
 
